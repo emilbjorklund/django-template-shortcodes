@@ -1,5 +1,7 @@
+import hashlib
 import re
-import begood.contrib.shortcodes.parsers
+
+from begood.contrib.shortcodes import parsers
 from django.core.cache import cache
 
 def import_parser(name):
@@ -16,6 +18,8 @@ def parse(value):
   parsed = value
 
   for item in groups:
+    cache_key = memcached_safe_key(item)
+  
     if ' ' in item:
       name, space, args = item.partition(' ')
       args = __parse_args__(args)
@@ -24,13 +28,13 @@ def parse(value):
       args = {}
 
     try:
-      if cache.get(item):
+      if cache.get(cache_key):
         parsed = re.sub(r'\[' + item + r'\]', cache.get(item), parsed)
       else:
-        module = import_parser('shortcodes.parsers.' + name)
+        module = import_parser('begood.contrib.shortcodes.parsers.' + name)
         function = getattr(module, 'parse')
         result = function(args)
-        cache.set(item, result, 3600)
+        cache.set(cache_key, result, 3600)
         parsed = re.sub(r'\[' + item + r'\]', result, parsed)
     except ImportError:
       pass
@@ -53,3 +57,8 @@ def __parse_args__(value):
       
       kwargs[item_key] = item_value
     return kwargs
+
+def memcached_safe_key(string, block_size=2**14):
+  md5 = hashlib.md5()
+  md5.update(string)
+  return md5.hexdigest()
