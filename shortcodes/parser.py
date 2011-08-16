@@ -1,5 +1,5 @@
 import re
-import shortcodes.parsers
+import begood.contrib.shortcodes.parsers
 from django.core.cache import cache
 
 def import_parser(name):
@@ -11,10 +11,10 @@ def import_parser(name):
 
 def parse(value):
   ex = re.compile(r'\[(.*?)\]')
-  ﻿groups = ex.findall(value)
+  groups = ex.findall(value)
   pieces = {}
   parsed = value
-﻿  
+
   for item in groups:
     if ' ' in item:
       name, space, args = item.partition(' ')
@@ -22,7 +22,7 @@ def parse(value):
     else:
       name = item
       args = {}
-﻿  ﻿  
+
     try:
       if cache.get(item):
         parsed = re.sub(r'\[' + item + r'\]', cache.get(item), parsed)
