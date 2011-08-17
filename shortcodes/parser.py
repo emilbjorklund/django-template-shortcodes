@@ -11,7 +11,7 @@ def import_parser(name):
     mod = getattr(mod, comp)
   return mod
 
-def parse(value):
+def parse(value, request):
   ex = re.compile(r'\[(.*?)\]')
   groups = ex.findall(value)
   pieces = {}
@@ -26,6 +26,8 @@ def parse(value):
     else:
       name = item
       args = {}
+    
+    args['request'] = request
 
     try:
       if cache.get(cache_key):
