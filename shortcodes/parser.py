@@ -28,7 +28,6 @@ def parse(value, request):
       args = {}
     
     args['request'] = request
-
     try:
       if cache.get(cache_key):
         parsed = re.sub(r'\[' + item + r'\]', cache.get(item), parsed)
@@ -37,7 +36,7 @@ def parse(value, request):
         function = getattr(module, 'parse')
         result = function(args)
         cache.set(cache_key, result, 3600)
-        parsed = re.sub(r'\[' + item + r'\]', result, parsed)
+        parsed = re.sub(r'\[' + re.escape(item) + r'\]', result, parsed)
     except ImportError:
       pass
   return parsed
