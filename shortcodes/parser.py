@@ -30,13 +30,19 @@ def parse(value, request):
     args['request'] = request
     try:
       if cache.get(cache_key):
-        parsed = re.sub(r'\[' + item + r'\]', cache.get(item), parsed)
+        try:
+          parsed = re.sub(r'\[' + item + r'\]', cache.get(item), parsed)
+        except:
+          pass
       else:
         module = import_parser('begood.contrib.shortcodes.parsers.' + name)
         function = getattr(module, 'parse')
         result = function(args)
-        cache.set(cache_key, result, 3600)
-        parsed = re.sub(r'\[' + re.escape(item) + r'\]', result, parsed)
+        try:
+          cache.set(cache_key, result, 3600)
+          parsed = re.sub(r'\[' + re.escape(item) + r'\]', result, parsed)
+        except:
+          pass
     except ImportError:
       pass
   return parsed
