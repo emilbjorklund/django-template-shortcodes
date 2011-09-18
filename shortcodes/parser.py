@@ -31,7 +31,7 @@ def parse(value, request):
     try:
       if cache.get(cache_key):
         try:
-          parsed = re.sub(r'\[' + item + r'\]', cache.get(item), parsed)
+          parsed = re.sub(r'\[' + item + r'\]', cache.get(cache_key), parsed)
         except:
           pass
       else:
