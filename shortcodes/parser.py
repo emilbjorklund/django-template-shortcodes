@@ -59,7 +59,7 @@ def __parse_args__(value):
           item_value = item_value[:item_value.__len__() - 1]
       
       kwargs[item_key] = item_value
-    return kwargs
+  return kwargs
 
 def memcached_safe_key(string, block_size=2**14):
   md5 = hashlib.md5()
