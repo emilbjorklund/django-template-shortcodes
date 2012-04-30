@@ -1,4 +1,4 @@
-from begood.contrib.shortcodes import parser
+from shortcodes import parser
 from django import template
 
 register = template.Library()

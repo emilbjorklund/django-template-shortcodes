@@ -1,7 +1,7 @@
 import hashlib
 import re
 
-from begood.contrib.shortcodes import parsers
+from shortcodes import parsers
 from django.core.cache import cache
 
 def import_parser(name):
@@ -32,7 +32,7 @@ def parse(value, request):
     
     args['request'] = request
     try:
-      module = import_parser('begood.contrib.shortcodes.parsers.' + name)
+      module = import_parser('shortcodes.parsers.' + name)
       function = getattr(module, 'parse')
       result = function(args)
       try:
