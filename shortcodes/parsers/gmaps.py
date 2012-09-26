@@ -6,7 +6,7 @@ def parse(kwargs):
   width = int(kwargs.get('width', getattr(settings, 'SHORTCODES_GMAPS_WIDTH', 556)))
   height = int(kwargs.get('height', 313))
 	
-  html = '<iframe width="{{ width }}" height="{{ height }}" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="{{ url }}&amp;ie=UTF8&amp;output=embed"></iframe>'
+  html = '<iframe width="{{ width }}" height="{{ height }}" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="{{ url|safe }}&amp;ie=UTF8&amp;output=embed"></iframe>'
   
   template = Template(html)
   context = Context(

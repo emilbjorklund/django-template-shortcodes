@@ -6,7 +6,7 @@ def parse(kwargs):
   width = int(kwargs.get('width', getattr(settings, 'SHORTCODES_IFRAME_WIDTH', 556)))
   height = int(kwargs.get('height', 313))
 	
-  html = '<iframe width="{{ width }}" height="{{ height }}" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="{{ url }}"></iframe>'
+  html = '<iframe width="{{ width }}" height="{{ height }}" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="{{ url|safe }}"></iframe>'
   
   template = Template(html)
   context = Context(
