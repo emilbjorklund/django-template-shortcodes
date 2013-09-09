@@ -21,8 +21,6 @@ def parse(value, request):
   parsed = value
   
   for item in groups:
-    cache_key = memcached_safe_key(item)
-  
     if ' ' in item:
       name, space, args = item.partition(' ')
       args = __parse_args__(args)
@@ -61,7 +59,3 @@ def __parse_args__(value):
       kwargs[item_key] = item_value
   return kwargs
 
-def memcached_safe_key(string, block_size=2**14):
-  md5 = hashlib.md5()
-  md5.update(string)
-  return md5.hexdigest()
