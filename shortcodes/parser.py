@@ -1,4 +1,3 @@
-import
 import re
 
 from shortcodes import parsers
