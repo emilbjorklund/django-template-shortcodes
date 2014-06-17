@@ -1,13 +1,14 @@
 # django-shortcodes
 
-This package provides [WordPress
+THIS IS EXPERIMENTAL STUFF. Don't use it. Probably.
+
+This package provides some [WordPress
 shortcode](http://en.support.wordpress.com/shortcodes/) support for Django
-templates. It is based on [django-shortcodes](http://code.google.com/p/django-shortcodes)
+templates. It is based on [django-shortcodes](http://code.google.com/p/django-shortcodes) as well as [WP Export Parser](https://github.com/RealGeeks/wp_export_parser)
 
 ## Installation
 
-Use `pip install django-shortcodes` or clone the [Git
-repository](https://github.com/agoodid/django-shortcodes).
+Clone the [Git repository](https://github.com/emilbjorklund/django-shortcodes).
 
 ## Usage
 
