@@ -4,7 +4,7 @@ THIS IS EXPERIMENTAL STUFF. Don't use it. Probably.
 
 This package provides some [WordPress
 shortcode](http://en.support.wordpress.com/shortcodes/) support for Django
-templates. It is based on [django-shortcodes](http://code.google.com/p/django-shortcodes) as well as [WP Export Parser](https://github.com/RealGeeks/wp_export_parser)
+templates. It is based on [AGoodId's version of django-shortcodes](https://github.com/AGoodId/django-shortcodes) (in turn based on https://code.google.com/p/django-shortcodes/) as well as [WP Export Parser](https://github.com/RealGeeks/wp_export_parser)
 
 ## Installation
 
