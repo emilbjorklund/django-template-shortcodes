@@ -7,13 +7,13 @@ def read(fname):
 
 setup(
     name="django-shortcodes",
-    version="0.2.0",
+    version="0.0.1",
     description="WordPress shortcode support for Django",
-    author="Mark Steadman",
-    author_email="marksteadman@me.com",
-    maintainer="AGoodId",
-    maintainer_email="teknik@agoodid.se",
-    url="https://github.com/agoodid/django-shortcodes",
+    author="Emil Björklund",
+    author_email="emil.bjorklund@inuse.se",
+    maintainer="Emil Björklund",
+    maintainer_email="emil.bjorklund@inuse.se",
+    url="https://github.com/emilbjorklund/django-shortcodes",
     license="MIT",
     packages=[
         "shortcodes",
@@ -22,7 +22,7 @@ setup(
     ],
     long_description=read("README.markdown"),
     classifiers=[
-        "Development Status :: 5 - Production/Stable",
+        "Development Status :: 2 - Pre-Alpha",
         "Framework :: Django",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
