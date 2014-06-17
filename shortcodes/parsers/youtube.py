@@ -1,46 +1,34 @@
 from django.template import Template, Context
 from django.conf import settings
 
-def parse(kwargs):
-  id = kwargs.get('id')
-  width = int(kwargs.get('width', getattr(settings, 'SHORTCODES_YOUTUBE_WIDTH', 425)))
-  height = int(kwargs.get('height', 0))
-  jquery = getattr(settings, 'SHORTCODES_YOUTUBE_JQUERY', False)
+def parse(attrs, tag_contents=None):
+  id = None
+  # Run through the passed attribute list and attempt to populate:
+  tag_atts = dict([(a[0], a[1]) for a in attrs if a[0] != ''])
+
+  # There's a shortform for the embed tags, which trips up the regex
+  # a bit, and puts the src, including the = before it as the 8th item
+  # in the list.
+  #
+  # Attempt to pull that out if no id arg was found:
+  if not 'id' in tag_atts.keys():
+    ids = [a[7] for a in attrs if len(a) > 7 and a[7] != '']
+    if len(ids) == 1:
+      tag_atts['id'] = ids[0][1:] # Lose the '=' at the beginning.
+
+  tag_atts['width'] = int(tag_atts.get('width', getattr(settings, 'SHORTCODES_YOUTUBE_WIDTH', 425)))
+  tag_atts['height'] = int(tag_atts.get('height', 0))
 	
-  if height == 0:
-    height = int(round(width / 425.0 * 344.0))
-	
-  if jquery:
-    html = '<a id="yt_{{ id }}" href="http://www.youtube.com/watch?v={{ id }}">'
-    html += '<span>Watch the YouTube video</span></a>\n'
-    html += '<script type="text/javascript">\n'
-    html += '\t$("#yt_{{ id }}").flash(\n'
-    html += '\t\t{\n'
-    html += '\t\t\tsrc: "http://www.youtube.com/v/{{ id }}",\n'
-    html += '\t\t\twidth: {{ width }},\n'
-    html += '\t\t\theight: {{ height }}\n'
-    html += '\t\t}\n'
-    html += '\t);\n'
-    html += '\t$("#yt_{{ id }} span").hide()\n'
-    html += '</script>\n'
-  else:
-    html = '<object width="{{ width }}" height="{{ height }}">'
-    html += '<param name="movie" value="http://www.youtube.com/v/{{ id }}&hl=en&fs=1"></param>'
-    html += '<param name="allowFullScreen" value="true"></param>'
-    html += '<param name="allowscriptaccess" value="always"></param>'
-    html += '<embed src="http://www.youtube.com/v/{{ id }}&hl=en&fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="{{ width }}" height="{{ height }}"></embed>'
-    html += '</object>'
+  if tag_atts['height'] == 0:
+    tag_atts['height'] = int(round(tag_atts['width'] / 425.0 * 344.0))
+
+  html = '<iframe width="{{ width }}" height="{{ height }}" '
+  html += 'src="{{ id }}" frameborder="0" allowfullscreen></iframe>'
 	
   template = Template(html)
-  context = Context(
-    {
-      'id': id,
-      'width': width,
-      'height': height
-    }
-  )
+  context = Context(tag_atts)
 	
-  if id:
+  if tag_atts['id']:
     return template.render(context)
   else:
     return 'Video not found'

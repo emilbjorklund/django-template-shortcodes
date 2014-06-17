@@ -1,61 +1,34 @@
-import hashlib
+import
 import re
 
 from shortcodes import parsers
-from django.core.cache import cache
 
-def import_parser(name):
-  try:
-    mod = __import__(name)
-  except ValueError:
-    return None
-  components = name.split('.')
-  for comp in components[1:]:
-    mod = getattr(mod, comp)
-  return mod
+from .parsers import youtube, caption
+
+TAGS_WE_CAN_PARSE = {
+    'youtube': youtube,
+    'caption': caption,
+}
+
+"""
+from https://github.com/RealGeeks/wp_export_parser/blob/master/wp_export_parser/parse_shortcodes.py
+"""
+def replace_tags(match):
+    tag_name = match.group(2)
+    tag_atts = match.group(3)
+    tag_contents = match.group(5)
+    if tag_name in TAGS_WE_CAN_PARSE:
+        tag_atts = parse_shortcode_atts(tag_atts)
+        return TAGS_WE_CAN_PARSE[tag_name].parse(tag_atts, tag_contents)
+
+def parse_shortcode_atts(atts):
+    pattern = r'(\w+)\s*=\s*"([^"]*)"(?:\s|$)|(\w+)\s*=\s*\'([^\']*)\'(?:\s|$)|(\w+)\s*=\s*([^\s\'"]+)(?:\s|$)|"([^"]*)"(?:\s|$)|(\S+)(?:\s|$)'
+    return re.findall(pattern, atts)
 
 def parse(value, request):
-  ex = re.compile(r'\[(.*?)\]')
-  groups = ex.findall(value)
-  pieces = {}
-  parsed = value
-  
-  for item in groups:
-    if ' ' in item:
-      name, space, args = item.partition(' ')
-      args = __parse_args__(args)
-    else:
-      name = item
-      args = {}
-    
-    args['request'] = request
-    try:
-      module = import_parser('shortcodes.parsers.' + name)
-      function = getattr(module, 'parse')
-      result = function(args)
-      try:
-        parsed = re.sub(r'\[' + re.escape(item) + r'\]', result, parsed)
-      except:
-        pass
-    except (ImportError, AttributeError):
-      pass
-  return parsed
-
-def __parse_args__(value):
-  ex = re.compile(r'[ ]*(\w+)=([^" ]+|"[^"]*")[ ]*(?: |$)')
-  groups = ex.findall(value)
-  kwargs = {}
-
-  for group in groups:
-    if group.__len__() == 2:
-      item_key = group[0]
-      item_value = group[1]
-      
-      if item_value.startswith('"'):
-        if item_value.endswith('"'):
-          item_value = item_value[1:]
-          item_value = item_value[:item_value.__len__() - 1]
-      
-      kwargs[item_key] = item_value
-  return kwargs
-
+    """
+    I stole this shortcode regex from Wordpress's source.  It is very confusing.
+    """
+    tagregexp = '|'.join([re.escape(t) for t in TAGS_WE_CAN_PARSE.keys()])
+    pattern = re.compile('\\[(\\[?)(' + tagregexp + ')\\b([^\\]\\/]*(?:\\/(?!\\])[^\\]\\/]*)*?)(?:(\\/)\\]|\\](?:([^\\[]*(?:\\[(?!\\/\\2\\])[^\\[]*)*)\\[\\/\\2\\])?)(\\]?)')
+    return re.sub(pattern, replace_tags, value)
