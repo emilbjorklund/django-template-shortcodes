@@ -37,7 +37,16 @@ class LibraryTest(CommonTestCase):
         result = t.render(context)
         self.assertEqual(result, '<iframe width="425" height="344" src="http://www.youtube.com/watch?v=JaNH56Vpg-A" frameborder="0" allowfullscreen></iframe>')
 
-    def test_youtube_tag_output_with_width(self):
+    def test_youtube_with_id(self):
+        t = Template('{% load shortcode_filters %}{{ youtube|shortcodes|safe }}')
+        request = self.factory.get('/foo')
+        context = RequestContext(request)
+        context['youtube'] = '[youtube id=http://www.youtube.com/watch?v=JaNH56Vpg-A]'
+        result = t.render(context)
+        self.assertEqual(result, '<iframe width="425" height="344" src="http://www.youtube.com/watch?v=JaNH56Vpg-A" frameborder="0" allowfullscreen></iframe>')
+
+
+    def test_youtube_tag_output_with_width_and_id(self):
         t = Template('{% load shortcode_filters %}{{ youtube|shortcodes|safe }}')
         request = self.factory.get('/foo')
         context = RequestContext(request)
@@ -53,9 +62,10 @@ class LibraryTest(CommonTestCase):
            align="alignright" \
            width="300"]<img src="http://localhost/Kanagawa2-300x205.jpg"\
            alt="Kanagawa" title="The Great Wave" width="300" height="205"\
-           class="size-medium wp-image-6" /> The Great Wave[/caption]"'
+           class="size-medium wp-image-6" /> The Great Wave[/caption]'
         result = t.render(context)
-        self.assertHTMLEqual(result, """<figure id="attachment_6" align="alignright" 
+
+        self.assertHTMLEqual(result, """<figure id="attachment_6" class="align-alignright" 
                     style="width: 300px"><img alt="Kanagawa" class="size-medium wp-image-6" 
                     height="205" src="http://localhost/Kanagawa2-300x205.jpg" 
                     title="The Great Wave" width="300"/><figcaption>
@@ -71,10 +81,9 @@ class LibraryTest(CommonTestCase):
            align="alignright" caption="The Great Wave"\
            width="300"]<img src="http://localhost/Kanagawa2-300x205.jpg"\
            alt="Kanagawa" title="The Great Wave" width="300" height="205"\
-           class="size-medium wp-image-6" />[/caption]"'
+           class="size-medium wp-image-6" />[/caption]'
         result = t.render(context)
-        print('RESULT: \n', result, '---------------------------------------------------------')
-        self.assertHTMLEqual(result, """<figure id="attachment_6" align="alignright" 
+        self.assertHTMLEqual(result, """<figure id="attachment_6" class="align-alignright" 
                     style="width: 300px"><img alt="Kanagawa" class="size-medium wp-image-6" 
                     height="205" src="http://localhost/Kanagawa2-300x205.jpg" 
                     title="The Great Wave" width="300" /><figcaption>
@@ -82,6 +91,9 @@ class LibraryTest(CommonTestCase):
                     </figcaption>\
                     </figure>""")
 
-
-if __name__ == "__main__":
-    unittest.main()
+    def test_caption_simple(self):
+        t = Template('{% load shortcode_filters %}{{ caption_snippet|shortcodes|safe }}')
+        context = RequestContext(self.factory.get('/'))
+        context['caption_snippet'] = '[caption caption="An image"]<img src="" alt="">[/caption]'
+        result = t.render(context)
+        self.assertHTMLEqual(result, '<figure><img src="" alt=""><figcaption><p>An image</p></figcaption></figure>')
