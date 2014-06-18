@@ -1,7 +1,10 @@
-from bs4 import BeautifulSoup
-
 from django.template import Template, Context
 from django.utils.safestring import mark_safe
+
+try:
+    from bs4 import BeautifulSoup
+except ImportError:
+    from BeautifulSoup import BeautifulSoup
 
 def parse(tag_atts, tag_contents):
     """
