@@ -18,6 +18,7 @@ setup(
     maintainer="Emil Björklund",
     maintainer_email="bjorklund.emil@gmail.com",
     url="https://github.com/emilbjorklund/django-template-shortcodes",
+    download_url='https://github.com/emilbjorklund/django-template-shortcodes/archive/0.0.1a.tar.gz',
     license="MIT",
     install_requires=['beautifulsoup4>=4.0.0'],
     packages=[
