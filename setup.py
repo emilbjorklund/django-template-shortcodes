@@ -1,4 +1,8 @@
-from distutils.core import setup
+# -*- coding: utf-8 -*-
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
 import os
 
 
@@ -8,14 +12,14 @@ def read(fname):
 setup(
     name="django-template-shortcodes",
     version="0.0.1",
-    description="WordPress shortcode support for Django",
+    description="Limited WordPress shortcode support for Django",
     author="Emil Björklund",
     author_email="bjorklund.emil@gmail.com",
     maintainer="Emil Björklund",
     maintainer_email="bjorklund.emil@gmail.com",
     url="https://github.com/emilbjorklund/django-template-shortcodes",
     license="MIT",
-    install_requires='beautifulsoup4>=4.0.0',
+    install_requires=['beautifulsoup4>=4.0.0'],
     packages=[
         "shortcodes",
         "shortcodes.parsers",
