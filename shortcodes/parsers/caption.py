@@ -14,10 +14,7 @@ def parse(tag_atts, tag_contents):
     . do_shortcode( $content ) . '<p class="wp-caption-text">' . $caption . '</p></div>';
     
     """
-    if not tag_atts:
-        return ''
-        
-    tag_atts = dict([(a[0], a[1]) for a in tag_atts])
+
     tag_atts['content'] = mark_safe(tag_contents)
 
     # Attempt to separate the text from the image, and put that in a figcaption
@@ -48,5 +45,5 @@ def parse(tag_atts, tag_contents):
 
     context = Context(tag_atts)
 
-    t = Template('<figure {% if id %}id="{{ id }}" {% endif %}{% if align %}class="align-{{ align }}"{% endif %} {% if width %}style="width: {{ width }}px"{% endif %}>{{ content|safe }}<figcaption><p>{{ caption|safe }}</p></figcaption></figure>')
+    t = Template('<figure {% if id %}id="{{ id }}" {% endif %}{% if align %}class="align-{{ align }}"{% endif %} {% if width %}style="width: {{ width }}px"{% endif %}>{{ content|safe }}{% if caption %}<figcaption><p>{{ caption|safe }}</p></figcaption>{% endif %}</figure>')
     return t.render(context)

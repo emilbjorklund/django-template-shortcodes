@@ -1,1 +1,3 @@
 *.pyc
+
+/django_template_shortcodes.egg-info/
