@@ -1,0 +1,2 @@
+export DJANGO_SETTINGS_MODULE=test_settings
+python -m unittest tests.test_templatetags
