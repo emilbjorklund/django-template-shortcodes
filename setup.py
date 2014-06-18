@@ -10,10 +10,10 @@ setup(
     version="0.0.1",
     description="WordPress shortcode support for Django",
     author="Emil Björklund",
-    author_email="emil.bjorklund@inuse.se",
+    author_email="bjorklund.emil@gmail.com",
     maintainer="Emil Björklund",
-    maintainer_email="emil.bjorklund@inuse.se",
-    url="https://github.com/emilbjorklund/django-shortcodes",
+    maintainer_email="bjorklund.emil@gmail.com",
+    url="https://github.com/emilbjorklund/django-template-shortcodes",
     license="MIT",
     install_requires='beautifulsoup4>=4.0.0',
     packages=[
