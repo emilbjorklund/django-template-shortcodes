@@ -2,19 +2,17 @@ from django.template import Template, Context
 from django.conf import settings
 
 def parse(attrs, tag_contents=None):
-  id = None
-  # Run through the passed attribute list and attempt to populate:
-  tag_atts = dict([(a[0], a[1]) for a in attrs if a[0] != ''])
 
-  # There's a shortform for the embed tags, which trips up the regex
-  # a bit, and puts the src, including the = before it as the 8th item
-  # in the list.
-  #
-  # Attempt to pull that out if no id arg was found:
-  if not 'id' in tag_atts.keys():
-    ids = [a[7] for a in attrs if len(a) > 7 and a[7] != '']
-    if len(ids) == 1:
-      tag_atts['id'] = ids[0][1:] # Lose the '=' at the beginning.
+  tag_atts = {}
+
+  for att_list in attrs:
+    # condense the list (strip empty):
+    sparse_list = [val for val in att_list if val]
+    if len(sparse_list) > 0 and sparse_list[0][0] == '=':
+      tag_atts['id'] = sparse_list[0][1:]
+    else:
+      if len(sparse_list) == 2:
+        tag_atts[sparse_list[0]] = sparse_list[1]
 
   tag_atts['width'] = int(tag_atts.get('width', getattr(settings, 'SHORTCODES_YOUTUBE_WIDTH', 425)))
   tag_atts['height'] = int(tag_atts.get('height', 0))
@@ -28,7 +26,7 @@ def parse(attrs, tag_contents=None):
   template = Template(html)
   context = Context(tag_atts)
 	
-  if tag_atts['id']:
+  if 'id' in tag_atts:
     return template.render(context)
   else:
     return 'Video not found'
