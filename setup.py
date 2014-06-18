@@ -11,7 +11,7 @@ def read(fname):
 
 setup(
     name="django-template-shortcodes",
-    version="0.0.1",
+    version="0.0.1a",
     description="Limited WordPress shortcode support for Django",
     author="Emil Björklund",
     author_email="bjorklund.emil@gmail.com",
