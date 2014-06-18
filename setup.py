@@ -6,7 +6,7 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
-    name="django-shortcodes",
+    name="django-template-shortcodes",
     version="0.0.1",
     description="WordPress shortcode support for Django",
     author="Emil Björklund",
@@ -15,6 +15,7 @@ setup(
     maintainer_email="emil.bjorklund@inuse.se",
     url="https://github.com/emilbjorklund/django-shortcodes",
     license="MIT",
+    install_requires='beautifulsoup4>=4.0.0',
     packages=[
         "shortcodes",
         "shortcodes.parsers",
