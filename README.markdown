@@ -8,13 +8,13 @@ templates. It is heavily based on [AGoodId's version of django-shortcodes](https
 
 ## Supported shortcodes (sort of): 
 
-    * `[caption caption="Foo bar"]<img src="" alt="" />[/caption]`
-    * `[caption]<img src="" alt="" /> Foo bar[/caption]`
-    * `[youtube=https://www.youtube.com/watch?v=dQw4w9WgXcQ]`
-    * `[youtube url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"]`
-    * `[gmaps url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"]`
-    * `[vimeo url="https://www.vimeo.com/watch?v=dQw4w9WgXcQ"]`
-    * `[iframe url="https://www.vimeo.com/watch?v=dQw4w9WgXcQ"]`
+* `[caption caption="Foo bar"]<img src="" alt="" />[/caption]`
+* `[caption]<img src="" alt="" /> Foo bar[/caption]`
+* `[youtube=https://www.youtube.com/watch?v=dQw4w9WgXcQ]`
+* `[youtube url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"]`
+* `[gmaps url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"]`
+* `[vimeo url="https://www.vimeo.com/watch?v=dQw4w9WgXcQ"]`
+* `[iframe url="https://www.vimeo.com/watch?v=dQw4w9WgXcQ"]`
 
 ## Installation
 
