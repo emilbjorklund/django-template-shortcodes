@@ -24,26 +24,36 @@ def parse(tag_atts, tag_contents):
         # try to get a soup instance from any tag contents passed in:
         try:
             soup = BeautifulSoup(tag_contents)
-            # If there's anything else inside the tag, extract the text.
-            # (harsh but...)
-            inside_text = soup.get_text()
 
-            if inside_text != '':
-                # Get the actual image:
-                image = soup.img.extract()
+            # Get the actual image:
+            image = soup.img.extract()
 
-                # If there's no image, something is seriously weird.
-                if image:
+            # If there's no image, something is seriously weird.
+            if image:
+                # Add image to content as markup string:
+                tag_atts['content'] = mark_safe(str(image))
 
-                    # Add image to content as markup string:
-                    tag_atts['content'] = mark_safe(str(image))
-                    # Add caption text as caption.
-                    tag_atts['caption'] = inside_text
+                # Add caption text as caption.
+                caption = ' '.join(soup.stripped_strings)
+                if caption:
+                    tag_atts['caption'] = caption
         except:
             pass
+
             
 
     context = Context(tag_atts)
 
-    t = Template('<figure {% if id %}id="{{ id }}" {% endif %}{% if align %}class="align-{{ align }}"{% endif %} {% if width %}style="width: {{ width }}px"{% endif %}>{{ content|safe }}{% if caption %}<figcaption><p>{{ caption|safe }}</p></figcaption>{% endif %}</figure>')
+    t = Template("""
+        {% spaceless %}
+        <figure {% if id %}id="{{ id }}"{% endif %}
+                {% if align %}class="align-{{ align }}"{% endif %} 
+                {% if width %}style="width: {{ width }}px"{% endif %}>
+            {{ content|safe }}
+            {% if caption %}
+            <figcaption>
+                <p>{{ caption|safe }}</p>
+            </figcaption>{% endif %}
+        </figure>
+        {% endspaceless %}""")
     return t.render(context)

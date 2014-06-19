@@ -77,6 +77,7 @@ class LibraryTest(CommonTestCase):
         self.assertHTMLEqual(result, '<figure><img src="" alt=""><figcaption><p>An image</p></figcaption></figure>')
 
     def test_caption_nocaption(self):
+        self.c['text'] = '[caption]<img src="" alt="">[/caption]'
         result = self.t.render(self.c)
         self.assertHTMLEqual(result, '<figure><img src="" alt=""></figure>')
 
@@ -99,3 +100,8 @@ class LibraryTest(CommonTestCase):
         self.c['text'] = '[vimeo=foo]'
         result = self.t.render(self.c)
         self.assertHTMLEqual(result, '<iframe src="http://player.vimeo.com/video/foo?title=0&amp;byline=0&amp;portrait=0" width="556" height="313" frameborder="0" webkitAllowFullScreen allowFullScreen></iframe>')
+
+    def test_caption_with_multiple_paras(self):
+        self.c['text'] = '[caption]<img src="" alt=""/><p>Foo</p><p>Bar</p>[/caption]'
+        result = self.t.render(self.c)
+        self.assertHTMLEqual(result, '<figure><img src="" alt=""><figcaption><p>Foo Bar</p></figure>')
