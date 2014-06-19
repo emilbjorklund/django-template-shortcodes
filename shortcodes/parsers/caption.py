@@ -46,9 +46,7 @@ def parse(tag_atts, tag_contents):
 
     t = Template("""
         {% spaceless %}
-        <figure {% if id %}id="{{ id }}"{% endif %}
-                {% if align %}class="align-{{ align }}"{% endif %} 
-                {% if width %}style="width: {{ width }}px"{% endif %}>
+        <figure {% if id %}id="{{ id }}"{% endif %}{% if align %}class="align-{{ align }}"{% endif %}{% if width %}style="width: {{ width }}px"{% endif %}>
             {{ content|safe }}
             {% if caption %}
             <figcaption>

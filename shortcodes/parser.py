@@ -108,3 +108,11 @@ def parse(value, request):
     
     pattern = get_regex()
     return re.sub(pattern, replace_tags, value)
+
+def remove(value, request):
+    """
+    Remove all shortcodes from the content.
+    """
+    pattern = get_regex()
+    return re.sub(pattern, '', value)
+

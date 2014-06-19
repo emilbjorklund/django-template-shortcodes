@@ -11,14 +11,14 @@ def read(fname):
 
 setup(
     name="django-template-shortcodes",
-    version="0.0.2",
+    version="0.0.3",
     description="Limited WordPress shortcode support for Django",
     author="Emil Björklund",
     author_email="bjorklund.emil@gmail.com",
     maintainer="Emil Björklund",
     maintainer_email="bjorklund.emil@gmail.com",
     url="https://github.com/emilbjorklund/django-template-shortcodes",
-    download_url='https://github.com/emilbjorklund/django-template-shortcodes/archive/0.0.2.tar.gz',
+    download_url='https://github.com/emilbjorklund/django-template-shortcodes/archive/0.0.3.tar.gz',
     license="MIT",
     install_requires=['beautifulsoup4>=4.0.0'],
     packages=[
