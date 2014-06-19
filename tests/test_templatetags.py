@@ -105,3 +105,18 @@ class LibraryTest(CommonTestCase):
         self.c['text'] = '[caption]<img src="" alt=""/><p>Foo</p><p>Bar</p>[/caption]'
         result = self.t.render(self.c)
         self.assertHTMLEqual(result, '<figure><img src="" alt=""><figcaption><p>Foo Bar</p></figure>')
+
+class RemovalFilterTest(TestCase):
+
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.c = RequestContext(self.factory.get('/'))
+        self.c['text'] = ''
+        self.maxDiff = None
+        self.t = Template('{% load shortcode_filters %}{{ text|removeshortcodes|safe }}')
+
+    def test_remove_caption(self):
+        self.c['text'] = '<p>Foo</p>[caption]<img src="" alt=""/><p>Foo</p><p>Bar</p>[/caption]<p>Bar</p>'
+        result = self.t.render(self.c)
+        self.assertHTMLEqual(result, '<p>Foo</p><p>Bar</p>')
+

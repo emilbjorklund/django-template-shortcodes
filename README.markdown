@@ -23,5 +23,13 @@ Or clone the [Git repository](https://github.com/emilbjorklund/django-shortcodes
 
 ## Usage
 
+Parse shortcodes:
+
     {% load shortcodes_filters %}
     {{ text|shortcodes|safe }}
+
+Remove shortcodes (completely, including contents inside):
+    
+    {% load shortcodes_filters %}
+    {{ text|removeshortcodes|safe }}
+
